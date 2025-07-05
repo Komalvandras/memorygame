@@ -18,11 +18,17 @@
       min-height: 100vh;
       margin: 0;
       padding: 20px;
+      overflow-x: hidden;
     }
     h1 {
       margin-bottom: 10px;
       color: #2c3e50;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      animation: popIn 1s ease-out;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
     #timer {
       font-size: 1.2rem;
@@ -37,6 +43,11 @@
       max-width: 440px;
       width: 100%;
       margin-bottom: 20px;
+      animation: fadeIn 0.8s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .card {
       width: 100%;
@@ -47,18 +58,21 @@
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       cursor: pointer;
-      transition: transform 0.3s;
+      transition: transform 0.6s;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 32px;
       overflow: hidden;
+      perspective: 1000px;
+      transform-style: preserve-3d;
     }
     .card span {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      backface-visibility: hidden;
     }
     .card.flipped {
       background-color: #d0f0ff;
@@ -66,7 +80,13 @@
     }
     .card.matched {
       background-color: #a5d6a7;
+      animation: pulse 0.4s ease-in-out;
       pointer-events: none;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
     }
     #restart, #start {
       margin: 10px;
@@ -78,15 +98,18 @@
       cursor: pointer;
       font-weight: bold;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
     #restart:hover, #start:hover {
       background-color: #2575fc;
+      transform: scale(1.05);
     }
     #celebration, #lose-message {
       font-size: 2rem;
       margin-top: 20px;
       display: none;
       font-weight: bold;
+      animation: fadeIn 0.8s ease-in;
     }
     #celebration {
       color: #2ecc71;
@@ -196,13 +219,16 @@
       document.getElementById('start').style.display = 'none';
       if (win) {
         document.getElementById('celebration').style.display = 'block';
+        document.body.style.background = 'radial-gradient(circle at center, #a1ffce, #faffd1)';
       } else {
         document.getElementById('lose-message').style.display = 'block';
+        document.body.style.background = 'linear-gradient(135deg, #f8d7da, #f5c6cb)';
       }
     }
 
     function initGame() {
       time = 120;
+      document.body.style.background = 'linear-gradient(135deg, #e0eafc, #cfdef3)';
       document.getElementById('celebration').style.display = 'none';
       document.getElementById('lose-message').style.display = 'none';
       document.getElementById('start').style.display = 'none';
